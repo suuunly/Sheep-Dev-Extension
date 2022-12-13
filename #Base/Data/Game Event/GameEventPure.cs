@@ -1,20 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using SDE;
+﻿using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Pure Game Event", menuName = "SDE/Data/Pure Game Event")]
-public class GameEventPure : ScriptableObject
+namespace SDE.Data
 {
-	public event System.Action<object> OnRaised;
+    [CreateAssetMenu(fileName = "Pure Game Event", menuName = "SDE/Data/Pure Game Event")]
+    public class GameEventPure : ScriptableObject
+    {
+        private void OnDisable()
+        {
+            OnRaised.RemoveAllListeners();
+        }
 
-	public void Raise(object param = null)
-	{
-		OnRaised.TryInvoke(param);
-	}
+        public event Action<object> OnRaised;
 
-	private void OnDisable()
-	{
-		OnRaised.RemoveAllListeners();
-	}
+        public void Raise(object param = null)
+        {
+            OnRaised.TryInvoke(param);
+        }
+    }
 }
